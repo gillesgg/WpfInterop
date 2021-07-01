@@ -11,15 +11,17 @@
         <!--  Input  -->
         <TextBox Margin="10" Text="{Binding Value1, UpdateSourceTrigger=PropertyChanged}" />
         <TextBox Margin="10" Text="{Binding Value2, UpdateSourceTrigger=PropertyChanged}" />
+        
         <!--  Calculate  -->
         <Button
             Margin="10"
             Command="{Binding CalculateCommand}"
             Content="Add" />
-        <Button
+        <Button x:Name="Button1"
             Margin="10"
             Command="{Binding CalculateCommand1}"
-            Content="Multiply" />
+            CommandParameter="Hello from button1"
+            Content="Multiply"/>
         <!--  Result  -->
         <TextBlock Margin="10" Text="{Binding Result}" />
 

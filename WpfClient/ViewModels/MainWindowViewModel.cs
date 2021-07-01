@@ -52,7 +52,7 @@ namespace WpfClient.ViewModels
 
         public IRelayCommand CalculateCommand { get; }
 
-        public IRelayCommand CalculateCommand1 { get; }
+        public IRelayCommand<object> CalculateCommand1 { get; }
 
         public ICommand ExecCommand { get; }
 
@@ -86,29 +86,31 @@ namespace WpfClient.ViewModels
                     return !string.IsNullOrEmpty(Value1) && !string.IsNullOrEmpty(Value2);
                 });
 
-            CalculateCommand1 = new RelayCommand(
-               execute: () =>
-               {
-                   try
-                   {
-                       var testInterop = new StubClient();
-                       var res = testInterop.Multiply(int.Parse(Value1), int.Parse(Value2));
 
+            CalculateCommand1 = new RelayCommand<object>(ExecuteCommand1,canExecuteCommand1);
 
-                       Result = $"{Value1} * {Value2} = {res}";
-                   }
-                   catch
-                   {
-                       Result = "Error!";
-                   }
-               },
-               canExecute: () =>
-               {
-                   return !string.IsNullOrEmpty(Value1) && !string.IsNullOrEmpty(Value2);
-               });
         }
 
+        private bool canExecuteCommand1(object parameter)
+        {
+            return !string.IsNullOrEmpty(Value1) && !string.IsNullOrEmpty(Value2);
+        }
 
+        private void ExecuteCommand1(object parameter)
+        {
+            try
+            {
+                var testInterop = new StubClient();
+                var res = testInterop.Multiply(int.Parse(Value1), int.Parse(Value2));
+
+
+                Result = $"{Value1} * {Value2} = {res}";
+            }
+            catch
+            {
+                Result = "Error!";
+            }
+        }
 
         private async Task ExecAsync()
         {
